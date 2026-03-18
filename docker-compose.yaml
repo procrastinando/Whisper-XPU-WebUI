@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  whisper-webapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: whisper-webapp-xpu
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./whisper-models:/root/.cache/whisper
+      - ./uploads:/app/uploads
+      - ./outputs:/app/outputs
+    devices:
+      - /dev/dri:/dev/dri
+    environment:
+      - USE_XETLA=OFF
+      - SYCL_PI_LEVEL_ZERO_USE_IMMEDIATE_COMMANDLISTS=1
+      - SYCL_CACHE_PERSISTENT=1
+    restart: unless-stopped

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whisper Arc Scribe</title>
+    <!-- Modern font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <h1>Whisper<span class="highlight">ARC</span> Scribe</h1>
+            <p>Hardware Accelerated Media Transcription via Intel Arc GPU</p>
+        </header>
+
+        <div class="upload-section">
+            <div id="drop-zone" class="drop-zone">
+                <div class="drop-zone-content">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    <p>Drag & drop media file here or <span class="browse-text">Browse</span></p>
+                    <span class="subtitle">Supports mp3, mp4, avi, mkv, opus...</span>
+                </div>
+                <input type="file" id="file-input" class="hidden-input" accept="audio/*,video/*" />
+            </div>
+
+            <div class="controls">
+                <div class="model-select-wrapper">
+                    <label for="model-select">Select Model</label>
+                    <select id="model-select">
+                        {% for model in models %}
+                            <option value="{{ model }}" {% if model == 'base' %}selected{% endif %}>{{ model }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button id="upload-btn" class="primary-btn" disabled>Upload & Transcribe</button>
+            </div>
+            
+            <div id="selected-file-info" class="selected-file-hidden"></div>
+        </div>
+
+        <div class="tasks-section">
+            <div class="tasks-header">
+                <h2>Global Queue & History</h2>
+                <div class="stats">
+                    <span class="stat-badge total">Total: <span id="stat-total">0</span></span>
+                    <span class="stat-badge active">Active: <span id="stat-active">0</span></span>
+                    <span class="stat-badge completed">Done: <span id="stat-completed">0</span></span>
+                </div>
+            </div>
+            <div id="tasks-container" class="tasks-container">
+                <!-- Task items will be dynamically inserted here -->
+                <div class="empty-state">No transcriptions in the queue.</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
